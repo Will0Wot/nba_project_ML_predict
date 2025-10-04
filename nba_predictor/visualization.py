@@ -356,6 +356,7 @@ def generate_visualizations(
     return chart_paths
 
 
+def main(argv: Optional[Iterable[str]] = None) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Generate exploratory visualizations for NBA matchup data",
@@ -395,6 +396,7 @@ def main() -> None:
         help="Optional path where a combined PDF summary (charts + story) will be saved.",
     )
 
+    args = parser.parse_args(argv)
     args = parser.parse_args()
 
     story_file = args.story_file

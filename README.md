@@ -39,6 +39,29 @@ actionable insights about the most important matchup factors.
    played, and `--top-n` to control how many feature contributions are shown in
    the explanation output.
 
+4. Build the supporting visuals that drive the storytelling deck (and optionally
+   produce a PDF-ready summary). You can either invoke the package module
+   directly or rely on the compatibility wrapper under `root/`:
+
+   ```bash
+   python -m nba_predictor.visualization \
+       --player-logs player_game_logs_2022.csv \
+       --pdf reports/summary.pdf
+   ```
+
+   The command saves four PNG charts under `reports/figures/`, covering team
+   offense vs. defense, home-court advantage, the leading scorers, and the
+   assist-to-turnover landscape. When `--pdf` is supplied, those visuals are
+   combined with the narrative in [`DATA_STORY.md`](DATA_STORY.md) to produce a
+   presentation-ready deck (defaulting to `reports/summary.pdf`). Supply a
+   custom markdown file with `--story-file` if you want to swap in different
+   talking points. The `reports/` directory and generated PDF are now excluded
+   from version control, so create the folder locally before running the
+   command and treat the output as an ephemeral artifact that you regenerate on
+   demand. Running `python root/visualization.py` forwards the same arguments to
+   the package CLI; this is provided to match earlier instructions that
+   referenced the script directly.
+
 ## Package overview
 
 - `nba_predictor.data`: Loading player logs, aggregating them into team game
