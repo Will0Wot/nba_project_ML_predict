@@ -357,6 +357,7 @@ def generate_visualizations(
 
 
 def main(argv: Optional[Iterable[str]] = None) -> None:
+def main() -> None:
     parser = argparse.ArgumentParser(
         description="Generate exploratory visualizations for NBA matchup data",
     )
@@ -396,6 +397,7 @@ def main(argv: Optional[Iterable[str]] = None) -> None:
     )
 
     args = parser.parse_args(argv)
+    args = parser.parse_args()
 
     story_file = args.story_file
     if story_file is None:
