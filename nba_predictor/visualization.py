@@ -357,7 +357,6 @@ def generate_visualizations(
 
 
 def main(argv: Optional[Iterable[str]] = None) -> None:
-def main() -> None:
     parser = argparse.ArgumentParser(
         description="Generate exploratory visualizations for NBA matchup data",
     )
@@ -396,28 +395,27 @@ def main() -> None:
         help="Optional path where a combined PDF summary (charts + story) will be saved.",
     )
 
-    args = parser.parse_args(argv)
-    args = parser.parse_args()
+    parsed_args = parser.parse_args(list(argv) if argv is not None else None)
 
-    story_file = args.story_file
+    story_file = parsed_args.story_file
     if story_file is None:
         default_story = Path("DATA_STORY.md")
         story_file = default_story if default_story.exists() else None
 
     paths = generate_visualizations(
-        args.player_logs,
-        args.output_dir,
-        args.top_players,
+        parsed_args.player_logs,
+        parsed_args.output_dir,
+        parsed_args.top_players,
         story_file,
-        args.pdf,
+        parsed_args.pdf,
     )
 
     print("Generated visualizations:")
     for path in paths:
         print(f" - {path}")
 
-    if args.pdf is not None:
-        print(f"PDF summary saved to: {args.pdf}")
+    if parsed_args.pdf is not None:
+        print(f"PDF summary saved to: {parsed_args.pdf}")
 
 
 if __name__ == "__main__":

@@ -92,7 +92,9 @@ To build on the current implementation, consider the following focus areas:
 
 - **Data coverage**: Only 2021-22 season game logs are bundled. Predictions for
   later seasons require updated data and possibly re-training to account for
-  roster changes.
+  roster changes. The CLI now falls back to league-average vectors when a team
+  is missing, but high-quality forecasts still depend on ingesting those teams'
+  actual logs.
 - **Model simplicity**: Logistic regression assumes linear relationships and may
   miss interaction effects between players, lineups, or contextual factors.
 - **Feature granularity**: The current features aggregate per-team season

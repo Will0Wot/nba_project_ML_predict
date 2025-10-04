@@ -88,6 +88,9 @@ def main() -> None:
                 opponent=args.opponent.upper(),
                 home=args.home,
             )
+            fallback_teams = set(
+                prediction_frame.attrs.get("fallback_teams", set())
+            )
         except ValueError as exc:
             print(f"\nUnable to generate prediction: {exc}")
             return
@@ -108,6 +111,13 @@ def main() -> None:
             if feature == "probability":
                 continue
             print(f"    {feature:>20}: {contribution:+.3f}")
+
+        if fallback_teams:
+            teams = ", ".join(sorted(fallback_teams))
+            print(
+                "\nNote: season averages were unavailable for"
+                f" {teams}. Used league-average fallback statistics instead."
+            )
 
 
 if __name__ == "__main__":

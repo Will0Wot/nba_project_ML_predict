@@ -275,23 +275,41 @@ def build_season_matchup_frame(
     team: str,
     opponent: str,
     home: bool,
+    *,
+    allow_fallback: bool = True,
 ) -> pd.DataFrame:
     """Create a single-row dataframe suitable for :class:`MatchupPredictor`.
 
     The resulting dataframe mirrors the structure of the training dataset with
-    ``*_DIFF`` feature columns and a ``HOME`` indicator.
+    ``*_DIFF`` feature columns and a ``HOME`` indicator. When data for one of
+    the requested teams is missing, callers can opt into using a fallback
+    vector representing the average club in the dataset. When a fallback is
+    used, the returned dataframe stores the affected teams under
+    ``frame.attrs["fallback_teams"]`` for downstream reporting.
     """
 
     base_features = [col.replace("_DIFF", "") for col in diff_feature_columns]
 
-    missing = {team, opponent} - set(season_averages.index)
-    if missing:
+    available_teams = set(season_averages.index)
+    missing = {team, opponent} - available_teams
+
+    if missing and not allow_fallback:
         raise ValueError(
             "Season averages missing for teams: " + ", ".join(sorted(missing))
         )
 
-    team_vector = season_averages.loc[team, base_features]
-    opponent_vector = season_averages.loc[opponent, base_features]
+    league_average = season_averages[base_features].mean()
+    fallback_teams: set[str] = set()
+
+    def resolve_vector(name: str) -> pd.Series:
+        if name in available_teams:
+            return season_averages.loc[name, base_features]
+
+        fallback_teams.add(name)
+        return league_average
+
+    team_vector = resolve_vector(team)
+    opponent_vector = resolve_vector(opponent)
 
     data = {
         diff_column: team_vector[base] - opponent_vector[base]
@@ -314,4 +332,6 @@ def build_season_matchup_frame(
         *diff_feature_columns,
     ]
 
-    return pd.DataFrame([data], columns=columns)
+    frame = pd.DataFrame([data], columns=columns)
+    frame.attrs["fallback_teams"] = fallback_teams
+    return frame

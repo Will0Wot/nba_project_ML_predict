@@ -37,7 +37,10 @@ actionable insights about the most important matchup factors.
 
    Use the `--weight-by-minutes` flag to weight season averages by minutes
    played, and `--top-n` to control how many feature contributions are shown in
-   the explanation output.
+   the explanation output. If the dataset does not include season averages for
+   one of the requested teams, the CLI now falls back to the league-average
+   profile derived from the available clubs and clearly flags the substitution
+   in the console output.
 
 4. Build the supporting visuals that drive the storytelling deck (and optionally
    produce a PDF-ready summary). You can either invoke the package module
