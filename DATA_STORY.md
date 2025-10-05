@@ -35,3 +35,74 @@ The visualization suite in this repository highlights how the current dataset ca
 * **Re-run visuals after updates:** Whenever you pull fresh player logs or retrain the model, regenerate the figures via `python -m nba_predictor.visualization --player-logs <path_to_csv>` so the story stays aligned with the data powering the engine.
 
 With these visuals, you can articulate why the model leans toward Milwaukee in neutral settings, how home courts reshape probabilities, and which player matchups deserve the most scrutiny when crafting betting strategies or preview packages. Run `python -m nba_predictor.visualization --player-logs player_game_logs_2022.csv --pdf reports/summary.pdf` to generate a shareable PDF that stitches this story together with the charts. The resulting file lives in the git-ignored `reports/` directory, so regenerate it locally whenever you refresh the dataset.
+
+# NBA Matchup Story (Simple, Plain-English)
+
+These pictures tell a simple story about part of the 2022 season for a handful of teams (Bucks, Raptors, Suns, Heat, Grizzlies, and a few others). You don’t need any technical background—just use the quick “what to look for” notes under each chart.
+
+---
+
+![Offense vs. Defense](reports/figures/team_offense_defense.png)
+
+## 1) Who looks strongest overall?
+**What the chart shows:** Each dot is a team.
+- Farther **right** = scores more points.
+- Farther **down** = gives up fewer points.
+- Brighter color = usually wins by more.
+
+**What to look for:**
+- **Milwaukee Bucks** stand out. In this sample of games, they score about **33** and allow about **15**, so they typically win by a lot.
+- **Raptors, Suns, and Heat** are solid on both sides of the ball and cluster near the middle—good, competitive teams.
+- **Grizzlies** don’t score much (~14) but also don’t allow much (~14), so many of their games are tight.
+
+---
+
+![Home court advantage](reports/figures/home_court_advantage.png)
+
+## 2) How much does playing at home help?
+**What the chart shows:** The size of the bar is how much better a team’s **home** record is than its **road** record.
+
+**What to look for:**
+- **Memphis** gets the biggest boost at home (a huge swing compared with their road games). Home crowd = real advantage for them.
+- **Miami** and **Toronto** also see strong bumps at home. When they play in their own arena, give them extra credit.
+
+---
+
+![Top scorers](reports/figures/top_scorers.png)
+
+## 3) Who drives the scoring?
+**What the chart shows:** Players with the highest average points per game in our data.
+
+**What to look for:**
+- **Giannis Antetokounmpo** leads the group at about **31** points (in ~32 minutes). If he’s playing, Milwaukee’s offense gets a big lift.
+- **Bam Adebayo** is a steady scorer (~20) and a key piece of Miami’s offense.
+- **Deandre Ayton, OG Anunoby, Jarrett Allen** and others add reliable points for their teams.
+
+---
+
+![Ball security and movement](reports/figures/assist_turnover_balance.png)
+
+## 4) Do teams share the ball and avoid mistakes?
+**What the chart shows:** Where teams land on **assists** (sharing the ball) vs **turnovers** (mistakes that give the ball away).
+
+**What to look for:**
+- Best spot is the **upper-left**: more assists, fewer turnovers. **Milwaukee** and **Miami** live near that zone.
+- Teams closer to the middle (like **Phoenix** or **Memphis**) have thinner margins—forcing turnovers or disrupting passes can swing a game.
+
+---
+
+## Important notes
+- This is a **partial snapshot** of the season (some teams have fewer games logged), so treat it as a helpful guide—not a full league ranking.
+- We haven’t added deeper stats yet (like pace or shot quality). Adding those later will make the story even clearer.
+
+---
+
+## Where to find or refresh the pictures
+- The charts save to `reports/figures/`.
+- If you’re helping maintain this project and need to refresh the images after updating the data, you can run:
+
+```bash
+python -m nba_predictor.visualization --player-logs player_game_logs_2022.csv --pdf reports/summary.pdf
+```
+
+This creates updated PNGs in `reports/figures/` and (optionally) a shareable PDF in `reports/summary.pdf`.
